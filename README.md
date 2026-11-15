@@ -23,12 +23,15 @@ Ou com Docker:
 ## Novo post
 
 ```bash
-./scripts/dev.sh new-post "Título do post"
+./scripts/new_post.rb "Título do post" --tags programacao,ferramentas
 ```
 
-Os posts ficam em `content/AAAA/MM/DD/slug/index.md` (com `index.en.md` opcional para a versão em inglês).
-As tags precisam existir em `data/tag_taxonomy.yml` (veja `TAGGING.md`).
-Depois de criar, rode `./scripts/generate_index.rb` para atualizar a listagem.
+Cria `content/AAAA/MM/DD/slug/index.md` como **rascunho** (`draft: true`); o endereço sai do título sem acentos.
+As tags precisam existir em `data/tag_taxonomy.yml` (veja `TAGGING.md`). Para a versão em inglês, crie `index.en.md` na mesma pasta.
+
+1. Escreva o post e preencha `description` e `tags`
+2. Veja localmente com `hugo server -D` (o `-D` mostra rascunhos)
+3. Para publicar: remova `draft: true`, rode `./scripts/generate_index.rb`, faça commit e push
 
 Para destacar posts no carrossel da home, edite `FEATURED_POSTS` em `scripts/generate_index.rb`.
 

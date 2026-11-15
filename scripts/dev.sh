@@ -69,45 +69,9 @@ test_recommendations() {
     docker compose run --rm "$SERVICE_NAME" ruby scripts/test_chronological_next.rb
 }
 
-slugify() {
-    echo "$1" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g; s/-\+/-/g; s/^-\|-$//g'
-}
-
 new_post() {
-    if [ -z "${1:-}" ]; then
-        print_error "Título do post não especificado"
-        print_message "Uso: ./scripts/dev.sh new-post 'Título do Post'"
-        exit 1
-    fi
-
-    local title="$1"
-    local date_path
-    local slug
-    local post_dir
-
-    date_path=$(date +%Y/%m/%d)
-    slug=$(slugify "$title")
-    post_dir="content/${date_path}/${slug}"
-
-    print_message "Criando post: $post_dir"
-
-    mkdir -p "$post_dir"
-
-    cat > "$post_dir/index.md" << EOF
----
-title: "$title"
-date: $(date +%Y-%m-%dT%H:%M:%S%z)
-draft: false
-description: "Descrição do post aqui"
-tags: []
-categories: []
----
-
-Conteúdo do post aqui...
-
-EOF
-
-    print_message "Post criado em: $post_dir/index.md"
+    # Runs locally (no Docker needed): see scripts/new_post.rb
+    ruby "$(dirname "$0")/new_post.rb" "$@"
 }
 
 show_help() {
@@ -120,13 +84,16 @@ show_help() {
     echo "  exec <cmd>     - Executa comando no container"
     echo "  generate-index - Gera o índice de posts"
     echo "  test-recommendations - Testa as recomendações cronológicas"
-    echo "  new-post <title> - Cria um novo post"
+    echo "  new-post <title> [--tags a,b] - Cria um novo post (rascunho)"
     echo "  help           - Mostra esta ajuda"
 }
 
 main() {
-    check_docker
-    
+    case "${1:-help}" in
+        new-post|help|--help|-h) ;;
+        *) check_docker ;;
+    esac
+
     case "${1:-help}" in
         start)
             start_dev

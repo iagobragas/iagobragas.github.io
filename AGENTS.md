@@ -19,6 +19,7 @@ Go is only needed to update the theme: `hugo mod get github.com/imfing/hextra@vX
 then run the tests and compare screenshots (layouts in `layouts/` override parts of the theme).
 
 ```bash
+./scripts/new_post.rb "Título" --tags a,b # new post as draft (accent-free slug from title)
 ./scripts/generate_index.rb               # regenerate homepage + archives listings
 ./scripts/tag_catalog.rb --check          # validate every post tag against data/tag_taxonomy.yml
 ./scripts/tag_catalog.rb --search "termo" # find a canonical tag before creating one
@@ -39,6 +40,7 @@ uv run --no-project --with pillow python scripts/generate_og_image.py
 ## Content
 
 Posts live at `content/YYYY/MM/DD/slug/index.md` (PT) with an optional `index.en.md` sibling (EN).
+Create them with `scripts/new_post.rb` (never hand-pick slugs with accents); they start as `draft: true`.
 
 ```yaml
 ---
