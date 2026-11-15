@@ -1,0 +1,18 @@
+{{- $isEN := eq .Site.Language.Lang "en" -}}
+{{- $archiveURL := cond $isEN "/en/archives/" "/archives/" -}}
+{{- $aboutURL := cond $isEN "/en/about/" "/about/" -}}
+{{- $rssURL := cond $isEN "/en/index.xml" "/index.xml" -}}
+<footer class="hextra-footer aor-site-footer hx:print:hidden">
+  <div class="aor-shell aor-site-footer__inner">
+    <div>
+      <a class="aor-site-footer__brand" href="{{ cond $isEN "/en/" "/" }}">Iago Bragas</a>
+      <p>&copy; {{ now.Year }} Iago Bragas.</p>
+    </div>
+    <nav class="aor-site-footer__links" aria-label="{{ cond $isEN "Footer navigation" "Navegação do rodapé" }}">
+      <a href="{{ $archiveURL }}">{{ cond $isEN "Complete archive" "Arquivo completo" }}</a>
+      <a href="{{ $rssURL }}">RSS</a>
+      <a href="https://github.com/iagobragas">GitHub</a>
+      <a href="{{ $aboutURL }}">{{ cond $isEN "About" "Sobre" }}</a>
+    </nav>
+  </div>
+</footer>

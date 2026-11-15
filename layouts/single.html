@@ -1,0 +1,36 @@
+{{ define "main" }}
+  <div class="aor-page-shell aor-article-shell">
+    {{ partial "sidebar.html" (dict "context" . "disableSidebar" true "displayPlaceholder" true) }}
+    {{ partial "toc.html" . }}
+    <article class="aor-page aor-article-page">
+      <main class="aor-article">
+        {{ partial "breadcrumb.html" (dict "page" . "enable" false) }}
+        <header class="aor-article-header">
+        {{ if .Title }}<h1>{{ .Title }}</h1>{{ end }}
+        {{ with .Params.tags }}
+          <div class="aor-post-tags aor-post-tags--article">
+            {{ partial "tags.html" (dict "context" $) }}
+          </div>
+        {{ end }}
+        <div class="aor-article-meta">
+          {{- with .Date -}}<time datetime="{{ .Format "2006-01-02" }}">{{ partial "utils/format-date" . }}</time>{{- end -}}
+          {{- with .Site.Config.Services.Disqus.Shortname }}
+          <span aria-hidden="true">&middot;</span>
+          <a href="#disqus_wrapper">
+            {{ T "joinDiscussion" }}
+          </a>
+          {{- end -}}
+        </div>
+        {{ partial "custom/tldr-link.html" . }}
+        </header>
+        <div class="content aor-article-content">
+          {{ .Content }}
+        </div>
+        <div class="aor-article-after">
+          {{ partial "components/chronological-next.html" . }}
+          {{ partial "components/comments.html" . }}
+        </div>
+      </main>
+    </article>
+  </div>
+{{ end }}

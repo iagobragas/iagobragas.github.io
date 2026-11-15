@@ -1,0 +1,13 @@
+{{ define "main" }}
+  <div class="aor-page-shell">
+    {{ partial "sidebar.html" (dict "context" . "disableSidebar" true) }}
+    <article class="aor-page aor-home-page">
+      <main class="aor-shell aor-home">
+        {{ if .Title }}<h1 class="hx:sr-only">{{ .Title }}</h1>{{ end }}
+        <div class="content aor-listing-content">
+          {{ .Content }}
+        </div>
+      </main>
+    </article>
+  </div>
+{{ end }}

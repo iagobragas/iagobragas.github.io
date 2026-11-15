@@ -1,0 +1,36 @@
+# Canonical tags for the blog. Every post tag must exist here (PT and EN slugs).
+# Search before adding: ./scripts/tag_catalog.rb --search "assunto"
+# Validate all posts:    ./scripts/tag_catalog.rb --check
+# Regenerate TAGGING.md: ./scripts/tag_catalog.rb --write TAGGING.md
+tags:
+  programming:
+    pt: programacao
+    en: programming
+    description: Programming languages, techniques, and day-to-day coding.
+  web_development:
+    pt: desenvolvimento-web
+    en: web-development
+    description: Frontend, backend, and the web platform.
+  artificial_intelligence:
+    pt: inteligencia-artificial
+    en: artificial-intelligence
+    description: AI, LLMs, and AI-assisted development.
+    aliases: [ai, ia, llm, llms]
+  tools:
+    pt: ferramentas
+    en: tools
+    description: Editors, terminals, CLIs, and developer tooling.
+  career:
+    pt: carreira
+    en: career
+    description: Career, learning, and working in tech.
+  notes:
+    pt: notas
+    en: notes
+    description: Short notes and ideas, often linked from other posts.
+
+# Named events or recurring event series (slug is the same in both languages).
+event_series: {}
+
+# Reserved section tags (none yet).
+special_tags: {}
