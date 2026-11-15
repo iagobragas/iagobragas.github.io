@@ -40,12 +40,10 @@
 {{- if $altURL }}
 <meta name="aor-alt-lang" content="{{ cond (eq $curLang "pt-br") "en" "pt" }}" data-url="{{ $altURL }}">
 {{- end }}
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap"
-  rel="stylesheet"
-/>
+{{/* Fonts are self-hosted (static/fonts, SIL OFL): no requests to Google, visitor IPs stay private. */}}
+<link rel="preload" href="{{ "fonts/inter-normal-latin.woff2" | relURL }}" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="{{ "fonts/newsreader-normal-latin.woff2" | relURL }}" as="font" type="font/woff2" crossorigin />
+<link rel="stylesheet" href="{{ "fonts/fonts.css" | relURL }}" />
 <style>
   /* Paper palette — warm light + warm charcoal dark.
      Overrides Hextra's Tailwind color variables so navbar, sidebar, footer,

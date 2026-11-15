@@ -79,6 +79,7 @@ approval, and commit only when the author asks.
 | `layouts/single.html` | Post template (TL;DR link, next post, optional Disqus) |
 | `layouts/partials/custom/editorial-styles.html` | Design system (light/dark, responsive, featured carousel) |
 | `layouts/partials/custom/head-end.html` | Fonts, CSS, language redirect, DuckDuckGo site search |
+| `static/fonts/` | Self-hosted Inter, JetBrains Mono, Newsreader (latin + latin-ext woff2, SIL OFL in `LICENSES/`). No Google Fonts requests |
 | `layouts/partials/custom/tldr-link.html` | "TL;DR com IA" link (Claude / ChatGPT / Grok) |
 | `layouts/partials/components/chronological-next.html` | "Próximo post" card |
 | `layouts/_partials/opengraph.html`, `partials/schema.html`, `sitemap.xml` | SEO: OG, JSON-LD, hreflang sitemap |
