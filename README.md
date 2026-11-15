@@ -34,5 +34,19 @@ Para destacar posts no carrossel da home, edite `FEATURED_POSTS` em `scripts/gen
 
 ## Créditos
 
-Layouts customizados baseados no blog [akitaonrails.github.io](https://github.com/akitaonrails/akitaonrails.github.io),
-de Fabio Akita, que por sua vez parte do [Hextra Starter Template](https://github.com/imfing/hextra-starter-template).
+Os layouts e scripts deste site são adaptados de [akitaonrails.github.io](https://github.com/akitaonrails/akitaonrails.github.io),
+de Fabio Akita, licenciado sob [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+**Modificações:** remoção de todo o conteúdo e da identidade visual do autor original, novo gerador de índice,
+fontes hospedadas no próprio site, favicon e configuração próprios, entre outras.
+
+O tema [Hextra](https://github.com/imfing/hextra) (MIT) e as fontes (SIL OFL) mantêm suas próprias licenças;
+veja [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
+
+## Licença
+
+[![CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
+© Iago Bragas. Este repositório, incluindo os textos do blog, está licenciado sob
+[Creative Commons Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt-br)
+(texto completo em [`LICENSE`](LICENSE)), exceto os componentes de terceiros listados em
+[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).

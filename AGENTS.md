@@ -87,6 +87,13 @@ approval, and commit only when the author asks.
 
 Disqus is off. To enable, add `services.disqus.shortname` to `hugo.yaml`.
 
+## License
+
+Whole repo (code and posts) is CC BY-NC-SA 4.0 (`LICENSE`), required by ShareAlike because layouts/scripts are
+adapted from akitaonrails.github.io (CC BY-NC-SA 4.0); keep the attribution in README "Créditos".
+Third-party exceptions (Hextra MIT, fonts OFL) are in `THIRD_PARTY_NOTICES.md`; update it when the theme version changes.
+NonCommercial: no ads/sponsored monetization of the site without revisiting this.
+
 ## Deployment
 
 GitHub Pages via `.github/workflows/pages.yaml` on push to `main` (validates tags, then builds).
