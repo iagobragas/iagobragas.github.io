@@ -1,47 +1,23 @@
-FROM ubuntu:22.04
+# Ubuntu 26.04 LTS ships Ruby 3.x, enough for the scripts in scripts/.
+# Go is not needed: the Hextra theme is vendored in _vendor/.
+FROM ubuntu:26.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y \
-  curl \
-  wget \
-  git \
-  build-essential \
+RUN apt-get update && apt-get install -y --no-install-recommends \
   ca-certificates \
-  gnupg \
-  lsb-release \
-  software-properties-common \
+  git \
   ruby \
-  ruby-dev \
-  ruby-bundler \
+  wget \
   && rm -rf /var/lib/apt/lists/*
-
-RUN GO_ARCH=$(dpkg --print-architecture) && \
-  case "$GO_ARCH" in \
-    amd64) GO_ARCH=amd64 ;; \
-    arm64) GO_ARCH=arm64 ;; \
-    *) echo "Unsupported Go architecture: $GO_ARCH" && exit 1 ;; \
-  esac && \
-  wget https://go.dev/dl/go1.21.5.linux-${GO_ARCH}.tar.gz && \
-  tar -C /usr/local -xzf go1.21.5.linux-${GO_ARCH}.tar.gz && \
-  rm go1.21.5.linux-${GO_ARCH}.tar.gz
-
-ENV PATH=$PATH:/usr/local/go/bin
-ENV GOPATH=/go
-ENV PATH=$PATH:$GOPATH/bin
 
 ARG HUGO_VERSION=0.170.0
 RUN ARCH=$(dpkg --print-architecture) && \
-  wget https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-${ARCH}.deb && \
+  wget -q https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-${ARCH}.deb && \
   dpkg -i hugo_extended_${HUGO_VERSION}_linux-${ARCH}.deb && \
   rm hugo_extended_${HUGO_VERSION}_linux-${ARCH}.deb
 
 WORKDIR /app
-
-COPY go.mod go.sum ./
-COPY hugo.yaml ./
-
-RUN go mod download
 
 COPY . .
 

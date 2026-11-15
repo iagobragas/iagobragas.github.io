@@ -5,7 +5,7 @@ Guidance for AI coding agents working in this repository.
 ## Project overview
 
 Personal blog of Iago Bragas at https://iagobragas.com.br. Hugo static site using the
-[Hextra](https://github.com/imfing/hextra) theme (v0.11.1, Hugo module vendored in `_vendor/`)
+[Hextra](https://github.com/imfing/hextra) theme (v0.13.0, Hugo module vendored in `_vendor/`)
 with a custom editorial layout on top (`layouts/`). Bilingual: Brazilian Portuguese (canonical) + English.
 
 Layouts and scripts derive from [akitaonrails.github.io](https://github.com/akitaonrails/akitaonrails.github.io)
@@ -14,7 +14,9 @@ Layouts and scripts derive from [akitaonrails.github.io](https://github.com/akit
 ## Commands
 
 Requires Hugo Extended 0.170.0+, Ruby 3+ (macOS system Ruby 2.6 is too old: use Homebrew's
-`/opt/homebrew/opt/ruby/bin`), Node (tests only), `uv` (OG image only).
+`/opt/homebrew/opt/ruby/bin`), Node 26 LTS (tests only, pinned in `.node-version`), `uv` (OG image only).
+Go is only needed to update the theme: `hugo mod get github.com/imfing/hextra@vX.Y.Z && hugo mod vendor`,
+then run the tests and compare screenshots (layouts in `layouts/` override parts of the theme).
 
 ```bash
 ./scripts/generate_index.rb               # regenerate homepage + archives listings
