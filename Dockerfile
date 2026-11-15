@@ -11,11 +11,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   wget \
   && rm -rf /var/lib/apt/lists/*
 
+# Hugo Extended ships a .deb only for amd64; the .tar.gz exists for amd64 and arm64 (Apple Silicon).
 ARG HUGO_VERSION=0.170.0
 RUN ARCH=$(dpkg --print-architecture) && \
-  wget -q https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-${ARCH}.deb && \
-  dpkg -i hugo_extended_${HUGO_VERSION}_linux-${ARCH}.deb && \
-  rm hugo_extended_${HUGO_VERSION}_linux-${ARCH}.deb
+  wget -qO /tmp/hugo.tar.gz https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-${ARCH}.tar.gz && \
+  tar -xzf /tmp/hugo.tar.gz -C /usr/local/bin hugo && \
+  rm /tmp/hugo.tar.gz && \
+  hugo version
 
 WORKDIR /app
 
