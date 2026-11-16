@@ -31,8 +31,10 @@ FEATURED_POSTS = [
 FEATURED_POSTS_EN = [
 ].freeze
 
-# Posts from January of last year onward appear on the main index.
-# Everything older goes to the archives page.
+# Archive page (/archives/): off while the blog is small, so the homepage lists every post.
+# When enabled, the homepage shows posts from January of last year onward and older ones
+# move to /archives/ (also re-add the "Arquivo"/"Archives" links in navbar, footer and hugo.yaml menus).
+ARCHIVE_ENABLED = false
 CUTOFF_YEAR = Date.today.year - 1
 
 def escape_markdown(text)
@@ -329,16 +331,16 @@ end
 def generate_index(grouped_posts)
   lines = ["#{FRONTMATTER_DELIMITER}\ntitle: #{SITE_TITLE}\n#{FRONTMATTER_DELIMITER}\n"]
   if grouped_posts.empty?
-    lines << "_Em construção. Os posts aparecem aqui em breve._\n"
+    lines << '<p class="aor-listing-intro"><em>Em construção. Os posts aparecem aqui em breve.</em></p>'
   else
     lines.concat(render_featured_posts(grouped_posts))
     lines << '<div class="aor-recent-header">'
-    lines << '<h2>Artigos recentes</h2>'
+    lines << "<h2>#{ARCHIVE_ENABLED ? 'Artigos recentes' : 'Artigos'}</h2>"
     lines.concat(render_index_view_toggle(lang: :pt))
     lines << '</div>'
     lines.concat(render_index_views(grouped_posts, lang: :pt))
   end
-  lines << '<div class="aor-archive-link"><a href="/archives/">Ver arquivo completo →</a></div>'
+  lines << '<div class="aor-archive-link"><a href="/archives/">Ver arquivo completo →</a></div>' if ARCHIVE_ENABLED
   lines.join("\n")
 end
 
@@ -346,7 +348,7 @@ def generate_archives(grouped_posts)
   lines = ["#{FRONTMATTER_DELIMITER}\ntitle: Arquivo\n#{FRONTMATTER_DELIMITER}\n"]
   lines << "<p class=\"aor-listing-intro\">Posts anteriores a #{CUTOFF_YEAR}.</p>"
   if grouped_posts.empty?
-    lines << "_Nenhum post antigo ainda._\n"
+    lines << '<p class="aor-listing-intro"><em>Nenhum post antigo ainda.</em></p>'
   else
     lines.concat(render_index_views(grouped_posts, lang: :pt))
   end
@@ -356,16 +358,16 @@ end
 def generate_index_en(grouped_posts)
   lines = ["#{FRONTMATTER_DELIMITER}\ntitle: #{SITE_TITLE}\n#{FRONTMATTER_DELIMITER}\n"]
   if grouped_posts.empty?
-    lines << "_No posts in English yet. Check back soon._\n"
+    lines << '<p class="aor-listing-intro"><em>No posts in English yet. Check back soon.</em></p>'
   else
     lines.concat(render_featured_posts_en(grouped_posts))
     lines << '<div class="aor-recent-header">'
-    lines << '<h2>Recent articles</h2>'
+    lines << "<h2>#{ARCHIVE_ENABLED ? 'Recent articles' : 'Articles'}</h2>"
     lines.concat(render_index_view_toggle(lang: :en))
     lines << '</div>'
     lines.concat(render_index_views(grouped_posts, lang: :en))
   end
-  lines << '<div class="aor-archive-link"><a href="/en/archives/">Browse the full archive →</a></div>'
+  lines << '<div class="aor-archive-link"><a href="/en/archives/">Browse the full archive →</a></div>' if ARCHIVE_ENABLED
   lines.join("\n")
 end
 
@@ -373,7 +375,7 @@ def generate_archives_en(grouped_posts)
   lines = ["#{FRONTMATTER_DELIMITER}\ntitle: Archives\n#{FRONTMATTER_DELIMITER}\n"]
   lines << "<p class=\"aor-listing-intro\">Posts before #{CUTOFF_YEAR}.</p>"
   if grouped_posts.empty?
-    lines << "_No older posts in English yet._\n"
+    lines << '<p class="aor-listing-intro"><em>No older posts in English yet.</em></p>'
   else
     lines.concat(render_index_views(grouped_posts, lang: :en))
   end
@@ -403,37 +405,38 @@ end
 posts = collect_posts(include_future: include_future, include_drafts: include_drafts)
 grouped = group_by_month(posts)
 
-recent = grouped.select { |(year, _month), _| year >= CUTOFF_YEAR }
+recent = ARCHIVE_ENABLED ? grouped.select { |(year, _month), _| year >= CUTOFF_YEAR } : grouped
 archived = grouped.select { |(year, _month), _| year < CUTOFF_YEAR }
-
-Dir.mkdir(ARCHIVES_DIR) unless Dir.exist?(ARCHIVES_DIR)
 
 File.write(INDEX_FILE, generate_index(recent))
 recent_count = recent.values.flatten.size
-puts "Generated #{INDEX_FILE} with #{recent_count} posts (#{CUTOFF_YEAR}+).#{suffix}"
+puts "Generated #{INDEX_FILE} with #{recent_count} posts.#{suffix}"
 
-File.write(ARCHIVES_FILE, generate_archives(archived))
-archived_count = archived.values.flatten.size
-puts "Generated #{ARCHIVES_FILE} with #{archived_count} posts (before #{CUTOFF_YEAR}).#{suffix}"
+if ARCHIVE_ENABLED
+  Dir.mkdir(ARCHIVES_DIR) unless Dir.exist?(ARCHIVES_DIR)
+  File.write(ARCHIVES_FILE, generate_archives(archived))
+  puts "Generated #{ARCHIVES_FILE} with #{archived.values.flatten.size} posts (before #{CUTOFF_YEAR}).#{suffix}"
+end
 
 # English index — only posts with index.en.md siblings
 posts_en = collect_posts_en(include_future: include_future, include_drafts: include_drafts)
 grouped_en = group_by_month(posts_en)
-recent_en = grouped_en.select { |(year, _month), _| year >= CUTOFF_YEAR }
+recent_en = ARCHIVE_ENABLED ? grouped_en.select { |(year, _month), _| year >= CUTOFF_YEAR } : grouped_en
 
 File.write(INDEX_FILE_EN, generate_index_en(recent_en))
 recent_en_count = recent_en.values.flatten.size
 puts "Generated #{INDEX_FILE_EN} with #{recent_en_count} posts.#{suffix}"
 
-archived_en = grouped_en.select { |(year, _month), _| year < CUTOFF_YEAR }
-File.write(ARCHIVES_FILE_EN, generate_archives_en(archived_en))
-archived_en_count = archived_en.values.flatten.size
-puts "Generated #{ARCHIVES_FILE_EN} with #{archived_en_count} posts (before #{CUTOFF_YEAR}).#{suffix}"
+if ARCHIVE_ENABLED
+  archived_en = grouped_en.select { |(year, _month), _| year < CUTOFF_YEAR }
+  File.write(ARCHIVES_FILE_EN, generate_archives_en(archived_en))
+  puts "Generated #{ARCHIVES_FILE_EN} with #{archived_en.values.flatten.size} posts (before #{CUTOFF_YEAR}).#{suffix}"
+end
 
 
 if include_drafts || include_future
   warn ''
-  warn "*** Reminder: #{[INDEX_FILE, ARCHIVES_FILE, INDEX_FILE_EN, ARCHIVES_FILE_EN].join(', ')}"
+  warn "*** Reminder: #{(ARCHIVE_ENABLED ? [INDEX_FILE, ARCHIVES_FILE, INDEX_FILE_EN, ARCHIVES_FILE_EN] : [INDEX_FILE, INDEX_FILE_EN]).join(', ')}"
   warn '*** were just regenerated WITH unpublished posts. Re-run without the preview'
   warn '*** flags before committing.'
 end

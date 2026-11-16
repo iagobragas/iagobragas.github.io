@@ -44,7 +44,10 @@ Dir.mktmpdir('blog-rss-scope-') do |destination|
     home_links.each do |url|
       assert(URI(url).path.start_with?('/en/') == (prefix == 'en/'), 'idiomas misturados no RSS')
     end
-    %W[#{prefix}index.xml #{prefix}tags/#{tag}/index.xml #{prefix}archives/index.xml].each do |path|
+    has_archive = File.exist?(File.join(destination, "#{prefix}archives/index.xml")) # archive page is optional
+    feeds = %W[#{prefix}index.xml #{prefix}tags/#{tag}/index.xml]
+    feeds << "#{prefix}archives/index.xml" if has_archive
+    feeds.each do |path|
       xml = read_output(destination, path)
       self_url = CGI.unescapeHTML(xml[/<atom:link href="([^"]+)"/, 1].to_s)
       assert(URI(self_url).path == "/#{path}", "self incorreto: #{path}")
@@ -64,8 +67,10 @@ Dir.mktmpdir('blog-rss-scope-') do |destination|
     tag_page = read_output(destination, "#{prefix}tags/#{tag}/index.html")
     expected = tag_page.scan(/class="aor-index-list__main-link" href="([^"]+)"/).flatten.first(20)
     assert(tag_links.map { |url| URI(url).path } == expected, 'RSS deve seguir ordem e seleção da página da tag')
-    assert(links(read_output(destination, "#{prefix}archives/index.xml")) == home_links,
-           'preservar comportamento das seções geradas sem páginas filhas')
+    if has_archive
+      assert(links(read_output(destination, "#{prefix}archives/index.xml")) == home_links,
+             'preservar comportamento das seções geradas sem páginas filhas')
+    end
     article_path = URI(home_links.first).path.delete_prefix('/') + 'index.html'
     assert(rss_href(read_output(destination, article_path)) == rss_href(read_output(destination, "#{prefix}index.html")),
            'artigo deve anunciar o feed geral do próprio idioma')

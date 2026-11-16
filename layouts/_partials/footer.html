@@ -1,5 +1,4 @@
 {{- $isEN := eq .Site.Language.Lang "en" -}}
-{{- $archiveURL := cond $isEN "/en/archives/" "/archives/" -}}
 {{- $aboutURL := cond $isEN "/en/about/" "/about/" -}}
 {{- $rssURL := cond $isEN "/en/index.xml" "/index.xml" -}}
 <footer class="hextra-footer aor-site-footer hx:print:hidden">
@@ -9,7 +8,6 @@
       <p>&copy; {{ now.Year }} Iago Braga. {{ cond $isEN "Content licensed under" "Conteúdo sob" }} <a href="{{ cond $isEN "https://creativecommons.org/licenses/by-nc-sa/4.0/" "https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt-br" }}" rel="license noopener" target="_blank">CC BY-NC-SA 4.0</a>.</p>
     </div>
     <nav class="aor-site-footer__links" aria-label="{{ cond $isEN "Footer navigation" "Navegação do rodapé" }}">
-      <a href="{{ $archiveURL }}">{{ cond $isEN "Complete archive" "Arquivo completo" }}</a>
       <a href="{{ $rssURL }}">RSS</a>
       <a href="https://github.com/iagobragas">GitHub</a>
       <a href="{{ $aboutURL }}">{{ cond $isEN "About" "Sobre" }}</a>

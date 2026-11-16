@@ -20,7 +20,7 @@ then run the tests and compare screenshots (layouts in `layouts/` override parts
 
 ```bash
 ./scripts/new_post.rb "Título" --tags a,b # new post as draft (accent-free slug from title)
-./scripts/generate_index.rb               # regenerate homepage + archives listings
+./scripts/generate_index.rb               # regenerate the homepage listing
 ./scripts/tag_catalog.rb --check          # validate every post tag against data/tag_taxonomy.yml
 ./scripts/tag_catalog.rb --search "termo" # find a canonical tag before creating one
 ./scripts/tag_catalog.rb --write TAGGING.md
@@ -53,8 +53,9 @@ draft: false
 ---
 ```
 
-**Generated files, never edit by hand:** `content/_index.md`, `content/_index.en.md`,
-`content/archives/_index.md`, `content/archives/_index.en.md`, `TAGGING.md`.
+**Generated files, never edit by hand:** `content/_index.md`, `content/_index.en.md`, `TAGGING.md`.
+The archive page (`/archives/`) is disabled (`ARCHIVE_ENABLED = false` in `scripts/generate_index.rb`):
+the homepage lists every post. Re-enable it there when the blog has many posts.
 Run `generate_index.rb` after adding, removing or retitling a post.
 
 **Featured carousel:** edit `FEATURED_POSTS` / `FEATURED_POSTS_EN` at the top of
@@ -77,7 +78,7 @@ approval, and commit only when the author asks.
 | File | Purpose |
 |------|---------|
 | `layouts/baseof.html`, `_partials/navbar.html`, `_partials/footer.html` | Page shell, header, footer |
-| `layouts/home.html`, `section.html`, `taxonomy.html`, `term.html` | Home, archives, tag index, tag pages |
+| `layouts/home.html`, `section.html`, `taxonomy.html`, `term.html` | Home, sections, tag index, tag pages |
 | `layouts/single.html` | Post template (TL;DR link, next post, optional Disqus) |
 | `layouts/partials/custom/editorial-styles.html` | Design system (light/dark, responsive, featured carousel) |
 | `layouts/partials/custom/head-end.html` | Fonts, CSS, language redirect, DuckDuckGo site search |

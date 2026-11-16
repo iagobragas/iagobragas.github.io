@@ -2,6 +2,4 @@
 title: Iago Braga
 ---
 
-_No posts in English yet. Check back soon._
-
-<div class="aor-archive-link"><a href="/en/archives/">Browse the full archive →</a></div>
+<p class="aor-listing-intro"><em>No posts in English yet. Check back soon.</em></p>
