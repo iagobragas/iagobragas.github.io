@@ -1,6 +1,7 @@
 {{- $permalink := .Permalink -}}
 {{- $lang := .Lang -}}
-{{- $isPost := and (eq .Kind "page") (not .IsHome) (not (in .File.Path "_index")) -}}
+{{- /* Only blog posts (URLs with /YYYY/), not standalone pages like /about/. */ -}}
+{{- $isPost := and (eq .Kind "page") (not .IsHome) (not (in .File.Path "_index")) (findRE "^/(en/)?[0-9]{4}/" .RelPermalink) -}}
 {{- if $isPost -}}
   {{- $prompt := "" -}}
   {{- if eq $lang "en" -}}
