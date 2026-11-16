@@ -4,9 +4,9 @@
 # Creates a new post as a draft: content/YYYY/MM/DD/<slug>/index.md
 #
 # Usage:
-#   ./scripts/new_post.rb "Título do post"
-#   ./scripts/new_post.rb "Título do post" --tags programacao,ferramentas
-#   ./scripts/new_post.rb "Título do post" --slug outro-endereco
+#   ./scripts/new_post.rb "Post title"
+#   ./scripts/new_post.rb "Post title" --tags programacao,ferramentas
+#   ./scripts/new_post.rb "Post title" --slug another-slug
 #
 # The slug comes from the title with accents removed ("Ação" -> "acao").
 # Posts start with `draft: true`, so nothing goes live until you remove it.
@@ -37,11 +37,11 @@ end
 
 options = { tags: [], slug: nil }
 parser = OptionParser.new do |o|
-  o.banner = 'Uso: ./scripts/new_post.rb "Título do post" [--tags tag1,tag2] [--slug endereco]'
-  o.on('--tags LIST', 'Tags separadas por vírgula (slugs em PT de data/tag_taxonomy.yml)') do |v|
+  o.banner = 'Usage: ./scripts/new_post.rb "Post title" [--tags tag1,tag2] [--slug slug]'
+  o.on('--tags LIST', 'Comma-separated tags (PT slugs from data/tag_taxonomy.yml)') do |v|
     options[:tags] = v.split(',').map(&:strip).reject(&:empty?)
   end
-  o.on('--slug SLUG', 'Endereço do post (padrão: gerado a partir do título)') { |v| options[:slug] = v }
+  o.on('--slug SLUG', 'Post slug (default: derived from the title)') { |v| options[:slug] = v }
 end
 parser.parse!
 
@@ -50,22 +50,22 @@ abort parser.banner if title.empty?
 
 require 'json'
 slug = slugify(options[:slug] || title)
-abort "Não foi possível gerar um endereço a partir de #{title.inspect}; use --slug." if slug.empty?
+abort "Could not derive a slug from #{title.inspect}; pass --slug." if slug.empty?
 
 known = pt_tags
 unknown = options[:tags] - known
 unless unknown.empty?
-  abort "Tags desconhecidas: #{unknown.join(', ')}\nDisponíveis: #{known.join(', ')}\n" \
-        'Para criar uma nova, adicione em data/tag_taxonomy.yml (veja TAGGING.md).'
+  abort "Unknown tags: #{unknown.join(', ')}\nAvailable: #{known.join(', ')}\n" \
+        'To add a new one, edit data/tag_taxonomy.yml (see TAGGING.md).'
 end
 
 now = Time.now
 dir = File.join(CONTENT_DIR, now.strftime('%Y/%m/%d'), slug)
 file = File.join(dir, 'index.md')
-abort "Já existe: #{file}" if File.exist?(file)
+abort "Already exists: #{file}" if File.exist?(file)
 
 Dir.glob(File.join(CONTENT_DIR, '*/*/*', slug)).each do |other|
-  warn "Aviso: já existe um post com o mesmo endereço final em #{other}"
+  warn "Warning: another post already uses this slug: #{other}"
 end
 
 require 'fileutils'
@@ -81,11 +81,11 @@ File.write(file, <<~MD)
 
 MD
 
-puts "Criado: #{file}"
-puts "Endereço quando publicado: /#{now.strftime('%Y/%m/%d')}/#{slug}/"
+puts "Created: #{file}"
+puts "URL once published: /#{now.strftime('%Y/%m/%d')}/#{slug}/"
 puts
-puts 'Próximos passos:'
-puts '  1. Escreva o post e preencha description e tags'
-puts "     Tags disponíveis: #{known.join(', ')}" unless known.empty?
-puts '  2. Veja localmente: hugo server -D   (o -D mostra rascunhos)'
-puts '  3. Para publicar: remova a linha draft: true, rode ./scripts/generate_index.rb, faça commit e push'
+puts 'Next steps:'
+puts '  1. Write the post and fill in description and tags'
+puts "     Available tags: #{known.join(', ')}" unless known.empty?
+puts '  2. Preview locally: hugo server -D   (-D shows drafts)'
+puts '  3. To publish: remove the draft: true line, run ./scripts/generate_index.rb, commit and push'

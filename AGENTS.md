@@ -19,10 +19,10 @@ Go is only needed to update the theme: `hugo mod get github.com/imfing/hextra@vX
 then run the tests and compare screenshots (layouts in `layouts/` override parts of the theme).
 
 ```bash
-./scripts/new_post.rb "Título" --tags a,b # new post as draft (accent-free slug from title)
+./scripts/new_post.rb "Title" --tags a,b  # new post as draft (accent-free slug from title)
 ./scripts/generate_index.rb               # regenerate the homepage listing
 ./scripts/tag_catalog.rb --check          # validate every post tag against data/tag_taxonomy.yml
-./scripts/tag_catalog.rb --search "termo" # find a canonical tag before creating one
+./scripts/tag_catalog.rb --search "term"  # find a canonical tag before creating one
 ./scripts/tag_catalog.rb --write TAGGING.md
 hugo server -p 1313                       # http://localhost:1313
 hugo --gc --minify                        # production build into public/
@@ -37,6 +37,11 @@ uv run --no-project --with pillow python scripts/generate_og_image.py
 
 `./scripts/generate_index.rb --future` / `--drafts` are local preview flags only: re-run without them before committing.
 
+## Conventions
+
+Repository language is English (README, docs, code comments, script output, commit messages).
+Site content stays bilingual: Portuguese (canonical) and English, including PT strings in layouts and i18n.
+
 ## Content
 
 Posts live at `content/YYYY/MM/DD/slug/index.md` (PT) with an optional `index.en.md` sibling (EN).
@@ -44,9 +49,9 @@ Create them with `scripts/new_post.rb` (never hand-pick slugs with accents); the
 
 ```yaml
 ---
-title: "Título do post"
+title: "Post title"
 date: '2026-11-15T10:00:00-03:00'  # ISO 8601, Brazil timezone
-description: "Resumo de uma linha (aparece nos cards e no SEO)"
+description: "One-line summary (shown on cards and used for SEO)"
 tags: [programacao]                 # must exist in data/tag_taxonomy.yml (pt slug in PT, en slug in EN)
 draft: false
 # optional: slug, images
@@ -84,7 +89,7 @@ approval, and commit only when the author asks.
 | `layouts/partials/custom/head-end.html` | Fonts, CSS, language redirect, DuckDuckGo site search |
 | `static/fonts/` | Self-hosted Inter, JetBrains Mono, Newsreader (latin + latin-ext woff2, SIL OFL in `LICENSES/`). No Google Fonts requests |
 | `layouts/partials/custom/tldr-link.html` | "TL;DR com IA" link (Claude / ChatGPT / Grok) |
-| `layouts/partials/components/chronological-next.html` | "Próximo post" card |
+| `layouts/partials/components/chronological-next.html` | "Next post" card |
 | `layouts/_partials/opengraph.html`, `partials/schema.html`, `sitemap.xml` | SEO: OG, JSON-LD, hreflang sitemap |
 | `layouts/_default/list.rss.xml` | RSS (home, per tag, per section) |
 
@@ -93,7 +98,7 @@ Disqus is off. To enable, add `services.disqus.shortname` to `hugo.yaml`.
 ## License
 
 Whole repo (code and posts) is CC BY-NC-SA 4.0 (`LICENSE`), required by ShareAlike because layouts/scripts are
-adapted from akitaonrails.github.io (CC BY-NC-SA 4.0); keep the attribution in README "Créditos".
+adapted from akitaonrails.github.io (CC BY-NC-SA 4.0); keep the attribution in README "Credits".
 Third-party exceptions (Hextra MIT, fonts OFL) are in `THIRD_PARTY_NOTICES.md`; update it when the theme version changes.
 NonCommercial: no ads/sponsored monetization of the site without revisiting this.
 

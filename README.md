@@ -1,55 +1,56 @@
 # iagobragas.com.br
 
-Blog pessoal do Iago Braga — tecnologia, desenvolvimento e o que mais interessar.
+Personal blog of Iago Braga: technology, software development, and whatever else interests me.
+Posts are written in Brazilian Portuguese, with optional English translations.
 
-Feito com [Hugo](https://gohugo.io/) e o tema [Hextra](https://github.com/imfing/hextra).
-Publicado no GitHub Pages em https://iagobragas.com.br.
+Built with [Hugo](https://gohugo.io/) and the [Hextra](https://github.com/imfing/hextra) theme.
+Published on GitHub Pages at https://iagobragas.com.br.
 
-## Rodando localmente
+## Running locally
 
-Requisitos: [Hugo Extended](https://gohugo.io/installation/) 0.170.0+ e Ruby 3+ (`brew install hugo ruby`).
+Requirements: [Hugo Extended](https://gohugo.io/installation/) 0.170.0+ and Ruby 3+ (`brew install hugo ruby`).
 
 ```bash
-./scripts/generate_index.rb   # gera a home e o arquivo de posts
+./scripts/generate_index.rb   # build the homepage listing
 hugo server                   # http://localhost:1313
 ```
 
-Ou com Docker:
+Or with Docker:
 
 ```bash
 ./scripts/dev.sh start
 ```
 
-## Novo post
+## New post
 
 ```bash
-./scripts/new_post.rb "Título do post" --tags programacao,ferramentas
+./scripts/new_post.rb "Post title" --tags programacao,ferramentas
 ```
 
-Cria `content/AAAA/MM/DD/slug/index.md` como **rascunho** (`draft: true`); o endereço sai do título sem acentos.
-As tags precisam existir em `data/tag_taxonomy.yml` (veja `TAGGING.md`). Para a versão em inglês, crie `index.en.md` na mesma pasta.
+Creates `content/YYYY/MM/DD/slug/index.md` as a **draft** (`draft: true`); the slug comes from the title without accents.
+Tags must exist in `data/tag_taxonomy.yml` (see `TAGGING.md`). For an English version, add `index.en.md` in the same folder.
 
-1. Escreva o post e preencha `description` e `tags`
-2. Veja localmente com `hugo server -D` (o `-D` mostra rascunhos)
-3. Para publicar: remova `draft: true`, rode `./scripts/generate_index.rb`, faça commit e push
+1. Write the post and fill in `description` and `tags`
+2. Preview locally with `hugo server -D` (`-D` shows drafts)
+3. To publish: remove `draft: true`, run `./scripts/generate_index.rb`, commit and push
 
-Para destacar posts no carrossel da home, edite `FEATURED_POSTS` em `scripts/generate_index.rb`.
+To feature posts in the homepage carousel, edit `FEATURED_POSTS` in `scripts/generate_index.rb`.
 
-## Créditos
+## Credits
 
-Os layouts e scripts deste site são adaptados de [akitaonrails.github.io](https://github.com/akitaonrails/akitaonrails.github.io),
-de Fabio Akita, licenciado sob [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
-**Modificações:** remoção de todo o conteúdo e da identidade visual do autor original, novo gerador de índice,
-fontes hospedadas no próprio site, favicon e configuração próprios, entre outras.
+This site's layouts and scripts are adapted from [akitaonrails.github.io](https://github.com/akitaonrails/akitaonrails.github.io)
+by Fabio Akita, licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+**Changes:** removed all of the original author's content and branding, new index generator,
+self-hosted fonts, own favicon and configuration, among others.
 
-O tema [Hextra](https://github.com/imfing/hextra) (MIT) e as fontes (SIL OFL) mantêm suas próprias licenças;
-veja [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
+The [Hextra](https://github.com/imfing/hextra) theme (MIT) and the fonts (SIL OFL) keep their own licenses;
+see [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
 
-## Licença
+## License
 
 [![CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
-© Iago Braga. Este repositório, incluindo os textos do blog, está licenciado sob
-[Creative Commons Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt-br)
-(texto completo em [`LICENSE`](LICENSE)), exceto os componentes de terceiros listados em
+© Iago Braga. This repository, including the blog posts, is licensed under
+[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+(full text in [`LICENSE`](LICENSE)), except for the third-party components listed in
 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).

@@ -29,7 +29,7 @@ def post_from(path)
 end
 
 def assert(condition, message)
-  raise "FALHOU: #{message}" unless condition
+  raise "FAILED: #{message}" unless condition
 end
 
 posts = Dir['content/{19,20}[0-9][0-9]/**/index{,.en}.md'].filter_map { |path| post_from(path) }
@@ -53,11 +53,11 @@ Dir.mktmpdir('blog-chronological-next-') do |destination|
     newer_posts = posts.select { |post| post.language == current.language && post.date > current.date }
 
     if newer_posts.empty?
-      assert(!recommendation, "#{current.url} não deveria recomendar um artigo depois do mais recente")
+      assert(!recommendation, "#{current.url} should not recommend an article after the newest one")
       next
     end
 
-    assert(recommendation, "#{current.url} deveria exibir uma recomendação")
+    assert(recommendation, "#{current.url} should show a recommendation")
 
     recommended_url = URI::DEFAULT_PARSER.unescape(recommendation[1])
     recommended = posts_by_url[recommended_url]
@@ -66,19 +66,19 @@ Dir.mktmpdir('blog-chronological-next-') do |destination|
     assert(recommended.date >= current.date, "#{current.url} recomenda um artigo anterior")
 
     dates_between = newer_posts.select { |post| post.date < recommended.date }
-    assert(dates_between.empty?, "#{current.url} pulou um artigo cronologicamente mais próximo")
+    assert(dates_between.empty?, "#{current.url} skipped a chronologically closer article")
 
     card_position = html.index('class="aor-next-post')
     # Only check ordering against comments when Disqus is enabled.
     if (comments_position = html.index('id="disqus_wrapper"'))
-      assert(card_position < comments_position, "#{current.url} posiciona a recomendação depois dos comentários")
+      assert(card_position < comments_position, "#{current.url} places the recommendation after the comments")
     end
 
     expected_label = current.language == 'en' ? 'Next post' : 'Próximo post'
-    assert(html.include?(expected_label), "#{current.url} usa o rótulo incorreto")
+    assert(html.include?(expected_label), "#{current.url} uses the wrong label")
     checked += 1
   end
 
-  assert(checked.positive?, 'nenhuma página com recomendação foi testada')
-  puts "OK: #{checked} páginas com recomendações cronológicas validadas."
+  assert(checked.positive?, 'no page with a recommendation was tested')
+  puts "OK: #{checked} pages with chronological recommendations checked."
 end

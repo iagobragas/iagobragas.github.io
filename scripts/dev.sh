@@ -17,29 +17,29 @@ print_error() {
 
 check_docker() {
     if ! command -v docker &> /dev/null; then
-        print_error "Docker não está instalado."
+        print_error "Docker is not installed."
         exit 1
     fi
 
     if ! docker compose version &> /dev/null; then
-        print_error "Docker Compose não está disponível."
+        print_error "Docker Compose is not available."
         exit 1
     fi
 }
 
 start_dev() {
-    print_message "Iniciando ambiente..."
+    print_message "Starting environment..."
     docker compose up --build -d
-    print_message "Servidor em: http://localhost:1313"
+    print_message "Server at: http://localhost:1313"
 }
 
 stop_dev() {
-    print_message "Parando ambiente..."
+    print_message "Stopping environment..."
     docker compose down
 }
 
 rebuild() {
-    print_message "Rebuildando..."
+    print_message "Rebuilding..."
     docker compose down
     docker compose build --no-cache
     docker compose up -d
@@ -51,21 +51,21 @@ logs() {
 
 exec_command() {
     if [ -z "${1:-}" ]; then
-        print_error "Comando não especificado"
+        print_error "No command given"
         exit 1
     fi
 
-    print_message "Executando: $1"
+    print_message "Running: $1"
     docker compose exec "$SERVICE_NAME" "$@"
 }
 
 generate_index() {
-    print_message "Gerando índice..."
+    print_message "Generating index..."
     docker compose exec "$SERVICE_NAME" ruby scripts/generate_index.rb
 }
 
 test_recommendations() {
-    print_message "Testando recomendações cronológicas..."
+    print_message "Testing chronological recommendations..."
     docker compose run --rm "$SERVICE_NAME" ruby scripts/test_chronological_next.rb
 }
 
@@ -75,17 +75,17 @@ new_post() {
 }
 
 show_help() {
-    echo "Comandos:"
-    echo "  start          - Inicia o ambiente"
-    echo "  stop           - Para o ambiente"
-    echo "  restart        - Reinicia o ambiente"
-    echo "  rebuild        - Rebuilda a imagem"
-    echo "  logs           - Mostra os logs"
-    echo "  exec <cmd>     - Executa comando no container"
-    echo "  generate-index - Gera o índice de posts"
-    echo "  test-recommendations - Testa as recomendações cronológicas"
-    echo "  new-post <title> [--tags a,b] - Cria um novo post (rascunho)"
-    echo "  help           - Mostra esta ajuda"
+    echo "Commands:"
+    echo "  start          - Start the environment"
+    echo "  stop           - Stop the environment"
+    echo "  restart        - Restart the environment"
+    echo "  rebuild        - Rebuild the image"
+    echo "  logs           - Show logs"
+    echo "  exec <cmd>     - Run a command in the container"
+    echo "  generate-index - Generate the post index"
+    echo "  test-recommendations - Test chronological recommendations"
+    echo "  new-post <title> [--tags a,b] - Create a new post (draft)"
+    echo "  help           - Show this help"
 }
 
 main() {

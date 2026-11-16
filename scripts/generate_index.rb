@@ -24,7 +24,7 @@ ALLOWED_TAGS = {
 }.transform_values(&:freeze).freeze
 
 # Featured carousel on the homepage: [date, title, url] of published posts.
-# Example: ['2026-11-15', 'Olá, mundo', '/2026/11/15/ola-mundo/']
+# Example: ['2026-11-15', 'Hello, world', '/2026/11/15/hello-world/']
 FEATURED_POSTS = [
 ].freeze
 

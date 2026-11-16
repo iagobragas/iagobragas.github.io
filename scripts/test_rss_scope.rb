@@ -7,7 +7,7 @@ require 'tmpdir'
 require 'uri'
 
 def assert(condition, message)
-  raise "FALHOU: #{message}" unless condition
+  raise "FAILED: #{message}" unless condition
 end
 
 def read_output(destination, path)
@@ -32,17 +32,17 @@ Dir.mktmpdir('blog-rss-scope-') do |destination|
   ['', 'en/'].each do |prefix|
     home = read_output(destination, "#{prefix}index.xml")
     home_links = links(home)
-    next puts("SKIP: #{prefix}index.xml sem posts") if home_links.empty?
+    next puts("SKIP: #{prefix}index.xml has no posts") if home_links.empty?
 
-    assert(home_links.length <= 20, "#{prefix}home deve ter no máximo 20 itens")
+    assert(home_links.length <= 20, "#{prefix}home feed must have at most 20 items")
     # Pick a tag that has posts in this language (was hard-coded to 'ruby').
     tag = Dir[File.join(destination, "#{prefix}tags/*/index.xml")]
           .map { |f| File.basename(File.dirname(f)) }
           .find { |t| !links(read_output(destination, "#{prefix}tags/#{t}/index.xml")).empty? }
-    next puts("SKIP: #{prefix}tags sem posts") unless tag
+    next puts("SKIP: #{prefix}tags have no posts") unless tag
 
     home_links.each do |url|
-      assert(URI(url).path.start_with?('/en/') == (prefix == 'en/'), 'idiomas misturados no RSS')
+      assert(URI(url).path.start_with?('/en/') == (prefix == 'en/'), 'languages mixed in RSS')
     end
     has_archive = File.exist?(File.join(destination, "#{prefix}archives/index.xml")) # archive page is optional
     feeds = %W[#{prefix}index.xml #{prefix}tags/#{tag}/index.xml]
@@ -50,30 +50,30 @@ Dir.mktmpdir('blog-rss-scope-') do |destination|
     feeds.each do |path|
       xml = read_output(destination, path)
       self_url = CGI.unescapeHTML(xml[/<atom:link href="([^"]+)"/, 1].to_s)
-      assert(URI(self_url).path == "/#{path}", "self incorreto: #{path}")
+      assert(URI(self_url).path == "/#{path}", "wrong self link: #{path}")
       page_path = path.sub(/index\.xml$/, 'index.html')
       advertised = rss_href(read_output(destination, page_path))
-      assert(advertised == self_url, "descoberta RSS incorreta: #{page_path}")
+      assert(advertised == self_url, "wrong RSS discovery link: #{page_path}")
       channel = CGI.unescapeHTML(xml[/<channel>.*?<link>(.*?)<\/link>/m, 1])
-      assert(URI(channel).path == "/#{path.sub(/index\.xml$/, '')}", 'link do canal incorreto')
+      assert(URI(channel).path == "/#{path.sub(/index\.xml$/, '')}", 'wrong channel link')
       checked += 1
     end
     tag_xml = read_output(destination, "#{prefix}tags/#{tag}/index.xml")
     tag_links = links(tag_xml)
-    assert(!tag_links.empty?, "#{tag} ficou vazio")
+    assert(!tag_links.empty?, "#{tag} feed is empty")
     tag_xml.scan(/<item>(.*?)<\/item>/m).flatten.each do |item|
-      assert(item.scan(/<category>(.*?)<\/category>/m).flatten.include?(tag), "item sem tag #{tag}")
+      assert(item.scan(/<category>(.*?)<\/category>/m).flatten.include?(tag), "item without tag #{tag}")
     end
     tag_page = read_output(destination, "#{prefix}tags/#{tag}/index.html")
     expected = tag_page.scan(/class="aor-index-list__main-link" href="([^"]+)"/).flatten.first(20)
-    assert(tag_links.map { |url| URI(url).path } == expected, 'RSS deve seguir ordem e seleção da página da tag')
+    assert(tag_links.map { |url| URI(url).path } == expected, 'RSS must follow the order and selection of the tag page')
     if has_archive
       assert(links(read_output(destination, "#{prefix}archives/index.xml")) == home_links,
-             'preservar comportamento das seções geradas sem páginas filhas')
+             'generated sections without child pages must keep the home feed')
     end
     article_path = URI(home_links.first).path.delete_prefix('/') + 'index.html'
     assert(rss_href(read_output(destination, article_path)) == rss_href(read_output(destination, "#{prefix}index.html")),
-           'artigo deve anunciar o feed geral do próprio idioma')
+           'article must advertise the main feed of its own language')
   end
-  puts "OK: #{checked} feeds, tags PT/EN e descoberta RSS em homes, tags, arquivos e artigos."
+  puts "OK: #{checked} feeds, PT/EN tags and RSS discovery on homes, tags, archives and articles."
 end

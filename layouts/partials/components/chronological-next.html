@@ -3,7 +3,7 @@
 {{- $foundCurrent := false -}}
 
 {{- range .Site.RegularPages.ByDate -}}
-  {{- /* Só considera posts do blog (URLs com ano/mês/dia), excluindo páginas como /about/. */ -}}
+  {{- /* Only blog posts (URLs with year/month/day), excluding pages like /about/. */ -}}
   {{- if findRE "^/(en/)?[0-9]{4}/" .RelPermalink -}}
     {{- if and $foundCurrent (not $next) -}}
       {{- $next = . -}}

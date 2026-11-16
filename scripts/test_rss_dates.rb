@@ -19,10 +19,10 @@ Dir.mktmpdir('blog-rss-dates-') do |destination|
   %w[index.xml en/index.xml].each do |feed|
     xml = File.read(File.join(destination, feed))
     built = Time.rfc2822(CGI.unescapeHTML(xml[/<lastBuildDate>(.*?)<\/lastBuildDate>/, 1])).to_i
-    raise "#{feed}: horário de build incorreto" unless (started..finished).cover?(built)
+    raise "#{feed}: wrong build time" unless (started..finished).cover?(built)
 
     items = xml.scan(/<item>(.*?)<\/item>/m).flatten
-    raise "#{feed}: feed sem artigos" if items.empty?
+    raise "#{feed}: feed has no articles" if items.empty?
 
     items.each do |item|
       link = item[/<link>(.*?)<\/link>/, 1]
@@ -31,14 +31,14 @@ Dir.mktmpdir('blog-rss-dates-') do |destination|
       schemas = html.scan(/<script type="application\/ld\+json">(.*?)<\/script>/m)
                     .map { |match| JSON.parse(match.first) }
       article = schemas.find { |schema| schema['@type'] == 'BlogPosting' }
-      raise "#{link}: metadados do artigo ausentes" unless article
+      raise "#{link}: article metadata missing" unless article
 
       expected = Time.iso8601(article.fetch('datePublished'))
       actual = Time.rfc2822(CGI.unescapeHTML(item[/<pubDate>(.*?)<\/pubDate>/, 1]))
-      raise "#{link}: RSS #{actual.iso8601}, artigo #{expected.iso8601}" unless actual == expected
+      raise "#{link}: RSS #{actual.iso8601}, article #{expected.iso8601}" unless actual == expected
 
       checked += 1
     end
   end
-  puts "OK: #{checked} datas de artigos e datas de build dos feeds PT/EN validadas."
+  puts "OK: #{checked} article dates and PT/EN feed build dates checked."
 end
