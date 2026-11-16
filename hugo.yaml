@@ -7,7 +7,7 @@ segments:
     - kind: '{home,section,taxonomy,term}'
     - path: '{/2025/**,/2026/**,/2027/**,/about,/archives}'
 
-title: Iago Bragas
+title: Iago Braga
 enableEmoji: true
 locale: "pt-BR"
 defaultContentLanguage: "pt-br"
@@ -58,10 +58,10 @@ languages:
     label: "English"
     locale: "en"
     weight: 2
-    title: "Iago Bragas"
+    title: "Iago Braga"
     contentDir: "content"
     params:
-      description: "Iago Bragas — tech, development, and whatever else."
+      description: "Iago Braga — tech, development, and whatever else."
     menu:
       main:
         - name: Theme
@@ -159,6 +159,6 @@ params:
     default: light
 
   author:
-    name: Iago Bragas
+    name: Iago Braga
 
-  description: "Iago Bragas — tecnologia, desenvolvimento e o que mais interessar."
+  description: "Iago Braga — tecnologia, desenvolvimento e o que mais interessar."

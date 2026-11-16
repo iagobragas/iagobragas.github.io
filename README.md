@@ -1,6 +1,6 @@
 # iagobragas.com.br
 
-Blog pessoal do Iago Bragas — tecnologia, desenvolvimento e o que mais interessar.
+Blog pessoal do Iago Braga — tecnologia, desenvolvimento e o que mais interessar.
 
 Feito com [Hugo](https://gohugo.io/) e o tema [Hextra](https://github.com/imfing/hextra).
 Publicado no GitHub Pages em https://iagobragas.com.br.
@@ -49,7 +49,7 @@ veja [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).
 
 [![CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
-© Iago Bragas. Este repositório, incluindo os textos do blog, está licenciado sob
+© Iago Braga. Este repositório, incluindo os textos do blog, está licenciado sob
 [Creative Commons Atribuição-NãoComercial-CompartilhaIgual 4.0 Internacional](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.pt-br)
 (texto completo em [`LICENSE`](LICENSE)), exceto os componentes de terceiros listados em
 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).

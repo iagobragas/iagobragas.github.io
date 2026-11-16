@@ -26,10 +26,10 @@ _FONT_CANDIDATES = [
 ]
 SERIF_BOLD, SERIF = next((b, r) for b, r in _FONT_CANDIDATES if Path(b).exists())
 
-WORDMARK = "Iago Bragas"
+WORDMARK = "Iago Braga"
 TAGLINE = "Tecnologia, desenvolvimento e o que mais interessar."
 FOOTER_LEFT = "iagobragas.com.br"
-FOOTER_RIGHT = "Iago Bragas"
+FOOTER_RIGHT = "Iago Braga"
 
 MARGIN = 84
 

@@ -1,5 +1,5 @@
 ---
-title: Iago Bragas
+title: Iago Braga
 ---
 
 _Em construção. Os posts aparecem aqui em breve._

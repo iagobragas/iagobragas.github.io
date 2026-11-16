@@ -5,7 +5,7 @@
 {{- $path := .RelPermalink -}}
 <header class="hextra-nav-container aor-site-header hx:print:hidden">
   <nav class="aor-shell aor-site-header__inner" aria-label="{{ cond $isEN "Main navigation" "Navegação principal" }}">
-    <a class="aor-wordmark" href="{{ $homeURL }}">Iago Bragas</a>
+    <a class="aor-wordmark" href="{{ $homeURL }}">Iago Braga</a>
 
     <div class="aor-site-header__links">
       <a href="{{ $homeURL }}"{{ if eq $path $homeURL }} aria-current="page"{{ end }}>{{ cond $isEN "Blog" "Blog" }}</a>

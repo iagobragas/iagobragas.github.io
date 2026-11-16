@@ -1,5 +1,5 @@
 ---
-title: Iago Bragas
+title: Iago Braga
 ---
 
 _No posts in English yet. Check back soon._

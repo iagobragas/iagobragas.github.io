@@ -4,7 +4,7 @@ Guidance for AI coding agents working in this repository.
 
 ## Project overview
 
-Personal blog of Iago Bragas at https://iagobragas.com.br. Hugo static site using the
+Personal blog of Iago Braga at https://iagobragas.com.br. Hugo static site using the
 [Hextra](https://github.com/imfing/hextra) theme (v0.13.0, Hugo module vendored in `_vendor/`)
 with a custom editorial layout on top (`layouts/`). Bilingual: Brazilian Portuguese (canonical) + English.
 
